@@ -18,7 +18,7 @@ namespace Matrices
         }
         
         [Test]
-        public void MatrixParralelMul_ShouldBeCorrect()
+        public void MatrixParallelMul_ShouldBeCorrect()
         {
             var m1 = new Matrix(new double[,] {{1,2,3}, {4,5,6}, {7,8,9}});
             var m2 = new Matrix(new double[,] {{9,8,7}, {6,5,4}, {3,2,1}});
