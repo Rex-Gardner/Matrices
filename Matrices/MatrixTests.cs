@@ -1,3 +1,4 @@
+using System;
 using System.Diagnostics;
 using NUnit.Framework;
 
@@ -14,6 +15,7 @@ namespace Matrices
 
             var actual = m1 * m2;
             var expected = new Matrix(new double[,] {{30,24,18}, {84,69,54}, {138,114,90}});
+            
             Assert.AreEqual(expected, actual);
         }
         
@@ -25,6 +27,7 @@ namespace Matrices
 
             var actual = m1.ParallelMul(m2);
             var expected = new Matrix(new double[,] {{30,24,18}, {84,69,54}, {138,114,90}});
+            
             Assert.AreEqual(expected, actual);
         }
         
@@ -46,6 +49,7 @@ namespace Matrices
             parallelMulTime.Start();
             var r2 = m1.ParallelMul(m2);
             parallelMulTime.Stop();
+            Console.WriteLine($"{parallelMulTime.ElapsedMilliseconds} {usualMulTime.ElapsedMilliseconds}");
             
             Assert.IsTrue(parallelMulTime.ElapsedMilliseconds < usualMulTime.ElapsedMilliseconds);
         }

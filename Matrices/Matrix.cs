@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Matrices
@@ -134,7 +135,8 @@ namespace Matrices
             var m2Width = mat.GetWidth();
             var result = new Matrix(m1Height, m2Width);
 
-            var task = Task.CompletedTask;
+            const int tasksCount = 5;
+            var tasks = new Task[tasksCount].Select(t => Task.CompletedTask).ToArray();
             
             for (var i = 0; i < m1Height; i++)
             {
@@ -142,10 +144,26 @@ namespace Matrices
                 {
                     var row = i;
                     var col = j;
+                    var isTaskCreated = false;
 
-                    task.ContinueWith(t => ComputeAndSetCellValue(this, mat, row, col, result));
+                    while (!isTaskCreated)
+                    {
+                        for (var k = 0; k < tasks.Length; k++)
+                        {
+                            if (!tasks[k].IsCompleted)
+                            {
+                                continue;
+                            }
+
+                            tasks[k] = Task.Run(() => ComputeAndSetCellValue(this, mat, row, col, result));
+                            isTaskCreated = true;
+                            break;
+                        }
+                    }
                 }
             }
+
+            Task.WaitAll(tasks);
           
             return result;
         }
